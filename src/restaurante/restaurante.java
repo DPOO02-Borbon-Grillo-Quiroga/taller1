@@ -54,25 +54,25 @@ public class restaurante {
 	{
 		ingredientes = cargarIngredientes(a1);
 		menu=cargarMenu(a2);
-		bebidas= cargarBebidas(a4);
+		bebidas=cargarBebidas(a4);
 		combos=cargarCombos(a3);
 		pedidos=new HashMap<String, ventas>();
 	}
 	
-	private static List<ingrediente> cargarIngredientes(String nombreArchivo) throws FileNotFoundException, IOException
+	private static List<ingrediente> cargarIngredientes(String nArchivo) throws FileNotFoundException, IOException
 	{
-		List<ingrediente> listaIngredientes = new ArrayList<>();
+		List<ingrediente> listaIngredientes=new ArrayList<>();
 		
-		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
+		BufferedReader br = new BufferedReader(new FileReader(nArchivo));
 		String linea = br.readLine();
 		while (linea != null)
 		{
-			String[] partes = linea.split(";");
-			String nombreIngrediente = partes[0];
-			int precioad=Integer.parseInt(partes[1]);
-			int pcaloriasIngredientes = Integer.parseInt(partes[2]);
-			ingrediente cadaIngrediente = new ingrediente(nombreIngrediente,precioad,pcaloriasIngredientes);
-			listaIngredientes.add(cadaIngrediente);
+			String[] parte=linea.split(";");
+			String nombreIngrediente=parte[0];
+			int precioad=Integer.parseInt(parte[1]);
+			int pcaloriasIngredientes=Integer.parseInt(parte[2]);
+			ingrediente cIngrediente=new ingrediente(nombreIngrediente,precioad,pcaloriasIngredientes);
+			listaIngredientes.add(cIngrediente);
 
 			linea = br.readLine();
 		}
@@ -81,44 +81,44 @@ public class restaurante {
 	}
 	
 	
-	private static List<productoMenu> cargarMenu(String nombreArchivo) throws FileNotFoundException, IOException
+	private static List<productoMenu> cargarMenu(String nArchivo) throws FileNotFoundException, IOException
 	{
-		List<productoMenu> menuLista = new ArrayList<>();
-		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
-		String linea = br.readLine();
-		while (linea != null) 
+		List<productoMenu> listaMenu = new ArrayList<>();
+		BufferedReader br=new BufferedReader(new FileReader(nArchivo));
+		String linea=br.readLine();
+		while (linea!=null) 
 		{
-			String[] partes = linea.split(";");
-			String nombreMenu = partes[0];
-			int precioBase = Integer.parseInt(partes[1]);
-			int pcaloriasMenuProducto = Integer.parseInt(partes[2]);
-			productoMenu elMenu = new productoMenu(nombreMenu,precioBase,pcaloriasMenuProducto);
-			menuLista.add(elMenu);
+			String[] parte=linea.split(";");
+			String nombreMenu=parte[0];
+			int precioBase=Integer.parseInt(parte[1]);
+			int pcaloriasMenuProducto=Integer.parseInt(parte[2]);
+			productoMenu Menu=new productoMenu(nombreMenu,precioBase,pcaloriasMenuProducto);
+			listaMenu.add(Menu);
 			linea = br.readLine();
 		}
 		
 		br.close();
-		return menuLista;
+		return listaMenu;
 	}
 	
-	private static List<comboMod> cargarCombos(String nombreArchivo) throws FileNotFoundException, IOException
+	private static List<comboMod> cargarCombos(String nArchivo) throws FileNotFoundException, IOException
 	{
 		List<comboMod> listaCombos = new ArrayList<>();
 		
-		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
-		String linea = br.readLine();
-		while (linea != null) 
+		BufferedReader br=new BufferedReader(new FileReader(nArchivo));
+		String linea=br.readLine();
+		while (linea!=null) 
 		{
-			String[] partes = linea.split(";");
-			String nombreCombo = partes[0];
-			int descuento = Integer.parseInt(partes[1].replace("%", ""));
+			String[] parte=linea.split(";");
+			String nombreCombo=parte[0];
+			int desc=Integer.parseInt(parte[1].replace("%", ""));
 			
-			comboMod comboModificado = new comboMod(nombreCombo,descuento);
+			comboMod comboModificado = new comboMod(nombreCombo,desc);
 			
-			String producto1Menu = partes[2];
-			String producto2Menu = partes[3];
+			String producto1Menu=parte[2];
+			String producto2Menu=parte[3];
 			
-			List<productoMenu> menu = restaurante.getMenuBase();
+			List<productoMenu>menu=restaurante.getMenuBase();
 			
 			for (productoMenu productoMenu : menu)
 			{
@@ -129,7 +129,7 @@ public class restaurante {
 			}
 			
 			listaCombos.add(comboModificado);
-			linea = br.readLine(); 
+			linea=br.readLine(); 
 		}
 		br.close();
 		
@@ -138,8 +138,8 @@ public class restaurante {
 	
 	public static void IniciarPedido(String nombreCliente,String direccionCliente)
 	{
-		ventas pedidoOrden = new ventas(nombreCliente,direccionCliente);
-		ventaCurso = pedidoOrden;
+		ventas pedidoOrden=new ventas(nombreCliente,direccionCliente);
+		ventaCurso=pedidoOrden;
 	}
 	
 	public static ventas getPedidoEnCurso()
@@ -152,53 +152,41 @@ public class restaurante {
 	{
 		
 		BufferedReader br = new BufferedReader(new FileReader("./data/" + String.valueOf(idPedido) + ".txt"));
-		String linea = br.readLine();
-		String Factura = "";
-		while (linea != null)
+		String linea=br.readLine();
+		String factura="";
+		while (linea!=null)
 		{
-			Factura += linea + "\n";
+			factura+=linea + "\n";
 			
-			linea = br.readLine();
+			linea=br.readLine();
 		}
 		
-		System.out.println("La informacion del pedido es: ");
+		System.out.println("Su pedido es:");
 		
-		ventas pedidoSolcitado = pedidos.get(String.valueOf(idPedido));
-		String textoPedido = pedidoSolcitado.generarFacturaTexto();
-		System.out.println(textoPedido);
+		ventas pedidoSolic=pedidos.get(String.valueOf(idPedido));
+		String textoVentas=pedidoSolic.generarFacturaTexto();
+		System.out.println(textoVentas);
 		br.close();
-		return Factura;
+		return factura;
 	}
 	
 	private static List<bebida> cargarBebidas(String nombreArchivo) throws FileNotFoundException, IOException
 	{
-		List<bebida> bebidasLista = new ArrayList<>();
+		List<bebida> listaBebidas=new ArrayList<>();
 		
-		BufferedReader br = new BufferedReader(new FileReader(nombreArchivo));
-		String linea = br.readLine();
-		while (linea != null) 
+		BufferedReader br=new BufferedReader(new FileReader(nombreArchivo));
+		String linea=br.readLine();
+		while (linea!=null) 
 		{
-			String[] parte = linea.split(";");
-			String nombreBebida = parte[0];
+			String[] parte=linea.split(";");
+			String nombreBebida=parte[0];
 			int precioBebida = Integer.parseInt(parte[1].replace("%", ""));
 			int pcaloriasBebida = Integer.parseInt(parte[2]);
 			bebida bebida = new bebida(nombreBebida,precioBebida,pcaloriasBebida);
-			bebidasLista.add(bebida);
-			linea = br.readLine();
+			listaBebidas.add(bebida);
+			linea=br.readLine();
 		}
 		br.close();
-		return bebidasLista;
-	}
-	
-	public static void comprarPedidos() throws FileNotFoundException, IOException
-	{
-		for (Map.Entry<String, ventas> pedido : pedidos.entrySet()) 
-		{
-		boolean existe = ventaCurso.equals(pedido.getValue());
-		if (existe == true)
-			{
-			System.out.println("Pedido no valido porque se repite");
-			}
-		}
+		return listaBebidas;
 	}
 }
